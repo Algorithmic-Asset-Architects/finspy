@@ -1,0 +1,68 @@
+
+
+curl -X POST http://127.0.0.1:8000/api/predict/device_monitoring/ \
+-H "Content-Type: application/json" \
+-d '{
+    "income": 0.3,
+    "name_email_similarity": 0.9865,
+    "customer_age": 40,
+    "credit_risk_score": 163,
+    "velocity_6h": 13096.03,
+    "velocity_24h": 7850.95,
+    "velocity_4w": 6742.08,
+    "device_fraud_count": 0,
+    "device_os": "linux",
+    "source": "INTERNET"
+}'
+{"fraud_probability":0.0039309351705014706,"is_fraud":false}
+
+
+ curl -X POST http://127.0.0.1:8000/api/predict/deposit_fraud/ -H "Content-Type: application/json" -d '{
+    "Step": 744,
+    "transactionType": "DEPOSIT",
+    "Amount": 324.12,
+    "startingClient": "4.68E+15",
+    "oldBalStartingClient": 2622238.75,
+    "newBalStartingClient": 37232327.14,
+    "destinationClient": "32-6276179",
+    "oldBalDestClient": 232320,
+    "newBalDestClient": 32320
+}'
+{"fraud_probability":0.0,"is_fraud":false}
+
+
+
+curl -X POST http://127.0.0.1:8000/api/predict/credit_card/ \
+-H "Content-Type: application/json" \
+-d '{
+    "merchant": "XYZ_Store",
+    "category": "shopping",
+    "amt": 250.75,
+    "gender": "M",
+    "lat": 37.7749,
+    "long": -122.4194,
+    "city_pop": 150000,
+    "unix_time": 1740845400,
+    "merch_lat": 37.7833,
+    "merch_long": -122.4167
+}'
+
+
+
+~$ curl -X POST http://127.0.0.1:8000/api/predict/bank_transaction/ -H "Content-Type: application/json" -d '{
+    "step": 1,
+    "t_type": "TRANSFER",
+    "amount": 10000.50,
+    "nameorig": "C123456789",
+    "oldbalanceorg": 50000.00,
+    "newbalanceorg": 40000.50,
+    "namedest": "M987654321",
+    "oldbalancedest": 20000.00,
+    "newbalancedest": 30000.50,
+    "isFlaggedFraud": 0,
+    "isFraud": 0
+}'
+{"fraud_probability":0.6292,"is_fraud":true}
+
+
+

@@ -1,0 +1,28 @@
+[
+    {
+        "step": 1,
+        "t_type": "TRANSFER",
+        "amount": 10000.50,
+        "nameorig": "C123456789",
+        "oldbalanceorg": 50000.00,
+        "newbalanceorg": 40000.50,
+        "namedest": "M987654321",
+        "oldbalancedest": 20000.00,
+        "newbalancedest": 30000.50,
+        "isFlaggedFraud": 0,
+    	"isFraud": 0
+    },
+    {
+        "step": 2,
+        "t_type": "CASH_OUT",
+        "amount": 5000.75,
+        "nameorig": "C567890123",
+        "oldbalanceorg": 30000.00,
+        "newbalanceorg": 25000.25,
+        "namedest": "M876543210",
+        "oldbalancedest": 10000.00,
+        "newbalancedest": 15000.75,
+        "isFlaggedFraud": 0,
+    	"isFraud": 0
+    }
+]

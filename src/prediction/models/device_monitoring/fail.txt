@@ -1,0 +1,60 @@
+import pickle
+import numpy as np
+import pandas as pd
+import json
+import warnings
+from sklearn.preprocessing import StandardScaler
+from dimens import features as ml_ft
+from dat_encod import encode_data
+from keras.models import Model
+from keras.layers import Input, Dense
+from xgboost import DMatrix, XGBClassifier
+
+warnings.filterwarnings('ignore')
+scalar = StandardScaler()
+
+with open('fraud_detection_model.pkl', 'rb') as model_file:
+    xgb_model = pickle.load(model_file)
+
+temp_tr_st = []
+
+def build_ann(input_shape):
+    #input layer
+    inp_layer = Input(shape=(input_shape))
+    #dense layers
+    dense_1 = Dense(64, activation='relu')(inp_layer)
+    dropout_1 = Dropout(hp.Float('dropout_1', 0.1, 0.5, step=0.1))(dense_1)
+    dense_2 = Dense(32, activation='relu')(dropout_1)
+    dropout_2 = Dropout(hp.Float('dropout_2', 0.1, 0.5, step=0.1))(dense_2)
+    #output layer
+    out_layer = Dense(1, activation='sigmoid')(dropout_2)
+    #define model
+    model = Model(inputs=inp_layer, outputs=out_layer)
+    
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return model
+
+#building ANN
+input_shape = (len(ml_ft)+1,)
+ann = build_ann(input_shape)
+
+def process_trans(json_trans):
+    
+    global temp_tr_st
+    encod_dat = encode_data(json_trans)
+    inp_dat = [encod_dat[feature] for feature in ml_ft]
+    mdl_inp = np.array([inp_dat], dtype=float)
+    xgb_prediction = xgb_model.predict_proba(mdl_inp)[:, 1]
+    
+    x_comb = np.column_stack((xgb_prediction, mdl_inp))
+    scalar.fit(x_comb)
+    x_comb_scaled = scalar.transform(x_comb)
+    fraud_prob = float(ann.predict(x_comb_scaled)[0][0])
+    verdict = 'fraudulent' if fraud_prob > 0.5 else 'not fraudulent'
+    #verdict = 'fraudulent' if xgb_prediction > 0.5 else 'not fraudulent'
+    print(f'Transaction is {verdict} with probability {fraud_prob:.2f}')
+
+with open('exmp_trc.json', 'r') as exmp_file:
+    exmp_trc = json.load(exmp_file)
+
+process_trans(exmp_trc)

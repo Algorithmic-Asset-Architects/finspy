@@ -1,0 +1,7 @@
+Features used as input to the model:
+1. transactionType
+2. Amount
+3. oldBalStartingClient
+4. newBalStartingClient
+5. oldBalDestClient
+6. newBalDestClient

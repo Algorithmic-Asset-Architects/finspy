@@ -1,0 +1,1 @@
+Features used for the model: ['step', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest', 'balance_delta_orig', 'balance_delta_dest', 'transaction_ratio', 'type_CASH_OUT', 'type_DEBIT', 'type_PAYMENT', 'type_TRANSFER']
